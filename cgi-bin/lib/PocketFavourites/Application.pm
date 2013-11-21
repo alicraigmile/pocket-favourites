@@ -1,5 +1,6 @@
 package PocketFavourites::Application;
 
+use strict;
 use Carp;
 use LWP::UserAgent;
 use FormEncoder;
@@ -84,6 +85,26 @@ sub access_token {
     return $self->{access_token};
 }
 
+sub set_access_token {
+    my $self = shift;
+    my $access_token = shift;
+    $self->{access_token} = $access_token;
+    return 1;
+}
+
+sub username {
+    my $self = shift;
+    carp ("'username' has not been set. call authorize first") unless $self->{username}; #todo - refactor with a more elegant exception handler
+    return $self->{username};
+}
+
+sub set_username {
+    my $self = shift;
+    my $username = shift;
+    $self->{username} = $username;
+    return 1;
+}
+
 sub fetch_request_token {
 
     my $self = shift;
@@ -139,7 +160,7 @@ sub authorize {
    
     my $data = ResponseParser::parse($response);
 
-    my $request_token = $data->{access_token}; #this is what we're really looking for out of the oauth response
+    my $access_token = $data->{access_token}; #this is what we're really looking for out of the oauth response
     my $username = $data->{username}; #this is a nice bonus
     $self->{access_token} = $access_token;
     $self->{username} = $username;
@@ -156,7 +177,7 @@ sub fetch_feed_data { #todo - refactor as an adapter - this request code is quit
     my $post_data = {
             'access_token'=>$self->access_token,
             'consumer_key'=>$self->consumer_key_web,
-            'favourite'=>1,
+            'favorite'=>1,
             'sort'=>'newest',
            'since'=>$since
         };
