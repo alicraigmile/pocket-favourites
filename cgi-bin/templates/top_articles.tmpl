@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Top Articles - <tmpl_var name="username"></title>
+</head>
+<body>
+<h1>Top Articles for <tmpl_var name="username"> this week</h1>
+<ul>
+<tmpl_loop name="articles">
+<li>
+<a href="<tmpl_var name="resolved_url">"><tmpl_var name="resolved_title"></a>
+</li>
+</tmpl_loop>
+</body>
+</html>
